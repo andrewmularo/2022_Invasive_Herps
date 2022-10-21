@@ -34,6 +34,10 @@ dim(herp_occurrence_filtered)
 ## Writing in new file 
 write.csv(herp_occurrence_filtered, "FloridaMuseum_Occurence_filtered.csv")
 
+### If needed to download separately 
+
+herp_occurrence_filtered<- read.csv("FloridaMuseum_Occurence_filtered.csv")
+
 
 ### I am now discovering what species have more than 20 occurences 
 ## so that there is a robust enough sample size for each individual
