@@ -64,7 +64,7 @@ impervioussurface<- read_csv("FloridaHerps_Impervious.csv")
 ## This dataset contains the reference to connect arcGIS OBJECTID with gbifID
 dissolved_buffer<- read_csv("FloridaHerp_Dissolved_Reference.csv")
 
-## Precipitation Data 2016 
+## Precipitation Data 2016, denoted each variable by month
 
 Prec1<- read.csv("Prec_1.csv")
 Prec1<- rename(Prec1, Mean_Jan= MEAN, Count_Jan = COUNT, Area_Jan = AREA, Min_Jan=MIN, Max_Jan=MAX, Range_Jan=RANGE, STD_Jan=STD, Sum_Jan=SUM)
@@ -91,6 +91,7 @@ Prec11<- rename(Prec11, Mean_Nov= MEAN,  Count_Nov = COUNT, Area_Nov = AREA, Min
 Prec12<- read.csv("Prec_12.csv")
 Prec12<- rename(Prec12, Mean_Dec= MEAN,  Count_Dec = COUNT, Area_Dec = AREA, Min_Dec=MIN, Max_Dec=MAX, Range_Dec=RANGE, STD_Dec=STD, Sum_Dec=SUM)
 
+## Merge all precipitation data together 
 preca<- inner_join(Prec1, Prec2)
 precb<- inner_join(preca, Prec3)
 precc<- inner_join(precb, Prec4)
@@ -103,11 +104,13 @@ precj<- inner_join(prech, Prec10)
 precl<- inner_join(precj, Prec11)
 precm<- inner_join(precl, Prec12)
 
+## Calcuated the mean annual precipitation across all 12 months
 Precipitation<- precm %>% mutate(mean = (Mean_Jan+Mean_Feb+Mean_Mar+Mean_April+Mean_May+Mean_June+Mean_July+Mean_Aug+Mean_Sep+Mean_Oct+Mean_Nov+Mean_Dec)/12)
 
 
 
-### Maximum Temperature 2016
+### Maximum Temperature 2016, denoted each variable by month
+
 Tmax1<- read.csv("Tmax_1.csv")
 Tmax1<- rename(Tmax1, Mean_Jan= MEAN, Count_Jan = COUNT, Area_Jan = AREA, Min_Jan=MIN, Max_Jan=MAX, Range_Jan=RANGE, STD_Jan=STD, Sum_Jan=SUM)
 Tmax2<- read.csv("Tmax_2.csv")
@@ -133,6 +136,7 @@ Tmax11<- rename(Tmax11, Mean_Nov= MEAN,  Count_Nov = COUNT, Area_Nov = AREA, Min
 Tmax12<- read.csv("Tmax_12.csv")
 Tmax12<- rename(Tmax12, Mean_Dec= MEAN,  Count_Dec = COUNT, Area_Dec = AREA, Min_Dec=MIN, Max_Dec=MAX, Range_Dec=RANGE, STD_Dec=STD, Sum_Dec=SUM)
 
+## Merge all max temp data together 
 Tmaxa<- inner_join(Tmax1, Tmax2)
 Tmaxb<- inner_join(Tmaxa, Tmax3)
 Tmaxc<- inner_join(Tmaxb, Tmax4)
@@ -145,11 +149,12 @@ Tmaxj<- inner_join(Tmaxh, Tmax10)
 Tmaxl<- inner_join(Tmaxj, Tmax11)
 Tmaxm<- inner_join(Tmaxl, Tmax12)
 
+# Calculated the mean annual maximum temperature across all 12 months 
 Max_Temp<- Tmaxm %>% mutate(mean = (Mean_Jan+Mean_Feb+Mean_Mar+Mean_April+Mean_May+Mean_June+Mean_July+Mean_Aug+Mean_Sep+Mean_Oct+Mean_Nov+Mean_Dec)/12)
 
 
 
-### Minimum Temperature 2016
+### Minimum Temperature 2016, denoted each variable by month
 Tmin1<- read.csv("Tmin_1.csv")
 Tmin1<- rename(Tmin1, Mean_Jan= MEAN, Count_Jan = COUNT, Area_Jan = AREA, Min_Jan=MIN, Max_Jan=MAX, Range_Jan=RANGE, STD_Jan=STD, Sum_Jan=SUM)
 Tmin2<- read.csv("Tmin_2.csv")
@@ -175,6 +180,7 @@ Tmin11<- rename(Tmin11, Mean_Nov= MEAN,  Count_Nov = COUNT, Area_Nov = AREA, Min
 Tmin12<- read.csv("Tmin_12.csv")
 Tmin12<- rename(Tmin12, Mean_Dec= MEAN,  Count_Dec = COUNT, Area_Dec = AREA, Min_Dec=MIN, Max_Dec=MAX, Range_Dec=RANGE, STD_Dec=STD, Sum_Dec=SUM)
 
+## Join all Tmin data together 
 Tmina<- inner_join(Tmin1, Tmin2)
 Tminb<- inner_join(Tmina, Tmin3)
 Tminc<- inner_join(Tminb, Tmin4)
@@ -187,6 +193,7 @@ Tminj<- inner_join(Tminh, Tmin10)
 Tminl<- inner_join(Tminj, Tmin11)
 Tminm<- inner_join(Tminl, Tmin12)
 
+## Calculate the annual mean minumum temperature across all 12 months 
 Min_Temp<- Tminm %>% mutate(mean = (Mean_Jan+Mean_Feb+Mean_Mar+Mean_April+Mean_May+Mean_June+Mean_July+Mean_Aug+Mean_Sep+Mean_Oct+Mean_Nov+Mean_Dec)/12)
 
 
@@ -281,6 +288,7 @@ florida_herp_impervious_amphibian<- florida_herp_impervious %>%
   filter(class == "Amphibia") %>% 
   arrange(Status)
 
+# By status
 amphibian_status_impervious<- ggplot(florida_herp_impervious_amphibian)+
   aes(x=MEAN, y = Status, color = Status)+
   geom_boxplot()+
@@ -298,6 +306,7 @@ amphibian_status_impervious<- ggplot(florida_herp_impervious_amphibian)+
 
 amphibian_status_impervious
 
+## By species 
 amphibian_impervious_plot<- ggplot(florida_herp_impervious_amphibian)+
   aes(x=MEAN, y = species, color = Status)+
   geom_boxplot()+
@@ -317,6 +326,7 @@ amphibian_impervious_plot
 florida_herp_impervious_squamata<- florida_herp_impervious %>% 
   filter(order == "Squamata")
 
+# By status 
 squamata_status_impervious<- ggplot(florida_herp_impervious_squamata)+
   aes(x=MEAN, y = Status, color = Status)+
   geom_boxplot()+
@@ -332,6 +342,7 @@ squamata_status_impervious<- ggplot(florida_herp_impervious_squamata)+
 
 squamata_status_impervious
 
+## By species 
 squamata_impervious_plot<- ggplot(florida_herp_impervious_squamata)+
   aes(x=MEAN, y = species, color = Status)+
   geom_boxplot()+
@@ -349,10 +360,11 @@ squamata_impervious_plot
 
 ## Statistical tests 
 
+# Normality 
 shapiro.test(florida_herp_impervious_amphibian$MEAN)
 shapiro.test(florida_herp_impervious_squamata$MEAN)
-# Not normally distribution 
 
+## Wilcoxon tests 
 t_amphibian_impervious<- wilcox.test(data = florida_herp_impervious_amphibian, MEAN ~ Status)
 t_amphibian_impervious
 summary(t_amphibian_impervious)
@@ -372,6 +384,7 @@ florida_herp_precipitation_amphibian<- florida_herp_precipitation %>%
   filter(class == "Amphibia") %>% 
   arrange(Status)
 
+# By status 
 amphibian_status_precipitation<- ggplot(florida_herp_precipitation_amphibian)+
   aes(x=mean, y = Status, color = Status)+
   geom_boxplot()+
@@ -386,6 +399,7 @@ amphibian_status_precipitation<- ggplot(florida_herp_precipitation_amphibian)+
         legend.position = "none")
 amphibian_status_precipitation
 
+# By species 
 amphibian_precipitation_plot<- ggplot(florida_herp_precipitation_amphibian)+
   aes(x=mean, y = species, color = Status)+
   geom_boxplot()+
@@ -405,6 +419,7 @@ amphibian_precipitation_plot
 florida_herp_precipitation_squamata<- florida_herp_precipitation %>% 
   filter(order == "Squamata")
 
+# By status 
 squamata_status_precipitation<- ggplot(florida_herp_precipitation_squamata)+
   aes(x=mean, y = Status, color = Status)+
   geom_boxplot()+
@@ -418,7 +433,7 @@ squamata_status_precipitation<- ggplot(florida_herp_precipitation_squamata)+
         title = element_text(size = 18),
         legend.position = "none")
 squamata_status_precipitation
-
+## By species 
 squamata_precipitation_plot<- ggplot(florida_herp_precipitation_squamata)+
   aes(x=mean, y = species, color = Status)+
   geom_boxplot()+
@@ -435,11 +450,11 @@ squamata_precipitation_plot<- ggplot(florida_herp_precipitation_squamata)+
 squamata_precipitation_plot
 
 ## Statistical tests 
-
+# Normality 
 shapiro.test(florida_herp_precipitation_amphibian$mean)
 shapiro.test(florida_herp_precipitation_squamata$mean)
-# Not normally distribution 
 
+# Wilcoxon test 
 t_amphibian_precipitation<- wilcox.test(data = florida_herp_precipitation_amphibian, mean ~ Status)
 t_amphibian_precipitation
 summary(t_amphibian_precipitation)
@@ -457,6 +472,7 @@ florida_herp_maxtemp_amphibian<- florida_herp_maxtemp %>%
   filter(class == "Amphibia") %>% 
   arrange(Status)
 
+# By status 
 amphibian_status_maxtemp<- ggplot(florida_herp_maxtemp_amphibian)+
   aes(x=mean, y = Status, color = Status)+
   geom_boxplot()+
@@ -471,6 +487,7 @@ amphibian_status_maxtemp<- ggplot(florida_herp_maxtemp_amphibian)+
         legend.position = "none")
 amphibian_status_maxtemp
 
+# By species 
 amphibian_maxtemp_plot<- ggplot(florida_herp_maxtemp_amphibian)+
   aes(x=mean, y = species, color = Status)+
   geom_boxplot()+
@@ -491,6 +508,7 @@ amphibian_maxtemp_plot
 florida_herp_maxtemp_squamata<- florida_herp_maxtemp %>% 
   filter(order == "Squamata")
 
+# By status 
 squamata_status_maxtemp<- ggplot(florida_herp_maxtemp_squamata)+
   aes(x=mean, y = Status, color = Status)+
   geom_boxplot()+
@@ -504,7 +522,7 @@ squamata_status_maxtemp<- ggplot(florida_herp_maxtemp_squamata)+
         title = element_text(size = 18),
         legend.position = "none")
 squamata_status_maxtemp
-
+## By species 
 squamata_maxtemp_plot<- ggplot(florida_herp_maxtemp_squamata)+
   aes(x=mean, y = species, color = Status)+
   geom_boxplot()+
@@ -522,10 +540,11 @@ squamata_maxtemp_plot
 
 ## Statistical tests 
 
+# Normality 
 shapiro.test(florida_herp_maxtemp_amphibian$mean)
 shapiro.test(florida_herp_maxtemp_squamata$mean)
-# Not normally distribution 
 
+# Wilcoxon test 
 t_amphibian_maxtemp<- wilcox.test(data = florida_herp_maxtemp_amphibian, mean ~ Status)
 t_amphibian_maxtemp
 summary(t_amphibian_maxtemp)
@@ -543,6 +562,7 @@ florida_herp_mintemp_amphibian<- florida_herp_mintemp %>%
   filter(class == "Amphibia") %>% 
   arrange(Status)
 
+# By status 
 amphibian_status_mintemp<- ggplot(florida_herp_mintemp_amphibian)+
   aes(x=mean, y = Status, color = Status)+
   geom_boxplot()+
@@ -556,7 +576,7 @@ amphibian_status_mintemp<- ggplot(florida_herp_mintemp_amphibian)+
         title = element_text(size = 18),
         legend.position = "none")
 amphibian_status_mintemp
-
+## By species 
 amphibian_mintemp_plot<- ggplot(florida_herp_mintemp_amphibian)+
   aes(x=mean, y = species, color = Status)+
   geom_boxplot()+
@@ -577,6 +597,7 @@ amphibian_mintemp_plot
 florida_herp_mintemp_squamata<- florida_herp_mintemp %>% 
   filter(order == "Squamata")
 
+# By status 
 squamata_status_mintemp<- ggplot(florida_herp_mintemp_squamata)+
   aes(x=mean, y = Status, color = Status)+
   geom_boxplot()+
@@ -592,6 +613,7 @@ squamata_status_mintemp<- ggplot(florida_herp_mintemp_squamata)+
 
 squamata_status_mintemp
 
+# By species 
 squamata_mintemp_plot<- ggplot(florida_herp_mintemp_squamata)+
   aes(x=mean, y = species, color = Status)+
   geom_boxplot()+
@@ -610,10 +632,11 @@ squamata_mintemp_plot
 
 ## Statistical tests 
 
+# Normality 
 shapiro.test(florida_herp_mintemp_amphibian$mean)
 shapiro.test(florida_herp_mintemp_squamata$mean)
-# Not normally distribution 
 
+# Wilcoxon test 
 t_amphibian_mintemp<- wilcox.test(data = florida_herp_mintemp_amphibian, mean ~ Status)
 t_amphibian_mintemp
 summary(t_amphibian_mintemp)
@@ -621,14 +644,6 @@ summary(t_amphibian_mintemp)
 t_squamata_mintemp<- wilcox.test(data = florida_herp_mintemp_squamata, mean ~ Status)
 t_squamata_mintemp
 summary(t_squamata_mintemp)
-
-
-
-
-
-
-
-
 
 
 
